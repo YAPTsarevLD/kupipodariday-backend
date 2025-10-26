@@ -22,16 +22,6 @@ export class UsersService {
   async create(createUserDto: CreateUserDto) {
     const { email, username, password, avatar, about } = createUserDto;
 
-    const foundUser = await this.userRepository.findOne({
-      where: [{ email }, { username }],
-    });
-
-    if (foundUser) {
-      throw new ConflictException(
-        'Пользователь с таким email или username уже зарегистрирован',
-      );
-    }
-
     const hashedPassword = await this.hashService.hashPassword(password);
 
     const newUser = this.userRepository.create({
